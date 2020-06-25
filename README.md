@@ -2,7 +2,7 @@
 
 Flix is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **5** hours spent in total
+Time spent: **8** hours spent in total
 
 ## User Stories
 
@@ -11,9 +11,9 @@ The following **required** functionality is complete:
 - [x] User sees an app icon on the home screen and a styled launch screen.
 - [x] User can view a list of movies currently playing in theaters from The Movie Database.
 - [x] Poster images are loaded using the UIImageView category in the AFNetworking library.
-- [ ] User sees a loading state while waiting for the movies API.
+- [x] User sees a loading state while waiting for the movies API.
 - [x] User can pull to refresh the movie list.
-- [ ] User sees an error message when there's a networking error.
+- [x] User sees an error message when there's a networking error.
 - [x] User can tap a tab bar button to view a grid layout of Movie Posters using a CollectionView.
 
 The following **optional** features are implemented:
@@ -47,12 +47,14 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 Describe any challenges encountered while building the app.
+- Current roadblock: I was not able to get UIActivityIndicatorView to appear - I'm not sure if it's that it doesn't load at all, or if it just doesn't appear for long enough compared to the process of fetching movie data. As an alternative, I was able to get MBProgressHUD to appear as a loading screen, but only by manually setting a delay. This is only really a temporary fix, so I plan to come back to this feature at a later time.
 
 ## Credits
 
 List an 3rd party libraries, icons, graphics, or other assets you used in your app.
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking) - networking task library
+- [MBProgressHUD](https://github.com/matej/MBProgressHUD) - an iOS activity indicator view
 
 ## License
 
