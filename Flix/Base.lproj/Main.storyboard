@@ -171,6 +171,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8Ia-nJ-xqw"/>
                     </view>
+                    <connections>
+                        <outlet property="trailerWebView" destination="XGE-4z-MQC" id="SqL-Fr-3eI"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9YM-zv-ZSz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
