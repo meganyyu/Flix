@@ -29,6 +29,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    // FIXME: find a way to put search bar into navigation view
+    /*self.searchBar = [[UISearchBar alloc] init];
+    [self.searchBar sizeToFit];
+    self.navigationItem.titleView = self.searchBar;*/
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.searchBar.delegate = self;
@@ -114,16 +119,12 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     
     if (searchText.length != 0) {
-        NSMutableArray* matched = [NSMutableArray array];
-        for(NSDictionary* movie in self.movies)
-        {
-            if([movie[@"title"] containsString:searchText])
-            {
-                [matched addObject:movie];
-                NSLog(@"found a movie!: %@", movie);
-            }
-        }
-        self.filteredData = matched;
+        
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSDictionary *evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject[@"title"] containsString:searchText];
+        }];
+        self.filteredData = [self.movies filteredArrayUsingPredicate:predicate];
+        
     }
     else {
         self.filteredData = self.movies;
