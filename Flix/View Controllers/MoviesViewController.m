@@ -30,9 +30,6 @@
     [super viewDidLoad];
     
     // FIXME: find a way to put search bar into navigation view
-    /*self.searchBar = [[UISearchBar alloc] init];
-    [self.searchBar sizeToFit];
-    self.navigationItem.titleView = self.searchBar;*/
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;

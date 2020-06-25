@@ -53,10 +53,7 @@
 
 - (void)fetchTrailerURL {
     NSString *movieID = self.movie[@"id"];
-    
-    NSString *APIBaseURLString = @"https://api.themoviedb.org/3/movie/";
-    NSString *APIKeyString = @"/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
-    NSString *fullAPIURLString = [NSString stringWithFormat:@"%@%@%@", APIBaseURLString, movieID, APIKeyString];
+    NSString *fullAPIURLString = [NSString stringWithFormat:@"https://api.themoviedb.org/3/movie/%@/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed", movieID];
     NSURL *url = [NSURL URLWithString:fullAPIURLString];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
