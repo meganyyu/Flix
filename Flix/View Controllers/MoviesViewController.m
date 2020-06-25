@@ -124,7 +124,6 @@
             return [evaluatedObject[@"title"] containsString:searchText];
         }];
         self.filteredData = [self.movies filteredArrayUsingPredicate:predicate];
-        
     }
     else {
         self.filteredData = self.movies;
@@ -159,6 +158,5 @@
     detailsViewController.movie = movie;
     NSLog(@"Tapping on a movie!");
 }
-
 
 @end

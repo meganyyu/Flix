@@ -100,10 +100,14 @@
                                         <rect key="frame" x="0.0" y="-88" width="414" height="333"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lnz-lR-nxX">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lnz-lR-nxX">
                                         <rect key="frame" x="8" y="173" width="114" height="170"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="Nky-CJ-KnY" appends="YES" id="Fbc-d0-drG"/>
+                                        </connections>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Onward" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aG4-kP-ynG">
                                         <rect key="frame" x="130" y="278" width="276" height="36"/>
@@ -134,11 +138,43 @@
                         <outlet property="posterView" destination="Lnz-lR-nxX" id="VZf-DI-ooi"/>
                         <outlet property="synopsisLabel" destination="Gfz-vT-8rV" id="eBf-hq-0cf"/>
                         <outlet property="titleLabel" destination="aG4-kP-ynG" id="wVf-Lz-UqK"/>
+                        <segue destination="diF-oE-8Wf" kind="presentation" identifier="trailerSegue" id="Hvc-2i-QLY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7fb-DZ-sYL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Nky-CJ-KnY">
+                    <connections>
+                        <action selector="onPosterTap:" destination="XWq-Ex-wZA" id="Kro-1S-cRl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1093" y="1752"/>
+            <point key="canvasLocation" x="1093" y="1750"/>
+        </scene>
+        <!--Trailer View Controller-->
+        <scene sceneID="Sqr-dp-Ve2">
+            <objects>
+                <viewController id="diF-oE-8Wf" customClass="TrailerViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Uxr-eb-hVN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XGE-4z-MQC">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="8Ia-nJ-xqw"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9YM-zv-ZSz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1093" y="2618"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="32v-dr-hM4">
@@ -184,7 +220,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5JJ-Iu-mQV">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="131" width="414" height="765"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="EAu-eg-i4e">
@@ -216,6 +252,11 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8XV-5a-yvj">
+                                <rect key="frame" x="0.0" y="87" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="OIe-2P-KpI"/>
@@ -223,11 +264,12 @@
                     <navigationItem key="navigationItem" id="raw-pA-eFr"/>
                     <connections>
                         <outlet property="collectionView" destination="5JJ-Iu-mQV" id="7In-p1-GS6"/>
+                        <outlet property="searchBar" destination="8XV-5a-yvj" id="wGa-jv-a0Z"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tav-Qy-z9Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2032" y="931"/>
+            <point key="canvasLocation" x="2031.8840579710147" y="930.80357142857133"/>
         </scene>
         <!--Now Playing-->
         <scene sceneID="1gJ-JZ-1zp">
@@ -250,6 +292,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wGv-2D-xUi"/>
+        <segue reference="QYz-T7-EL6"/>
     </inferredMetricsTieBreakers>
 </document>
