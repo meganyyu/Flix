@@ -132,7 +132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7fb-DZ-sYL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="1779"/>
+            <point key="canvasLocation" x="1093" y="1752"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="32v-dr-hM4">
@@ -205,6 +205,7 @@
                                         <size key="customSize" width="151" height="217"/>
                                         <connections>
                                             <outlet property="posterView" destination="W4S-Hr-pwL" id="HGh-pv-JGl"/>
+                                            <segue destination="XWq-Ex-wZA" kind="show" id="QYz-T7-EL6"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -220,7 +221,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tav-Qy-z9Z" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2031.8840579710147" y="930.80357142857133"/>
+            <point key="canvasLocation" x="2032" y="931"/>
         </scene>
         <!--Now Playing-->
         <scene sceneID="1gJ-JZ-1zp">
@@ -242,4 +243,7 @@
             <point key="canvasLocation" x="131.8840579710145" y="137.94642857142856"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="QYz-T7-EL6"/>
+    </inferredMetricsTieBreakers>
 </document>
