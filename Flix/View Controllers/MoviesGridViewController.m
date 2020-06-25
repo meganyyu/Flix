@@ -9,6 +9,7 @@
 #import "MoviesGridViewController.h"
 #import "MovieCollectionCell.h"
 #import "UIImageView+AFNetworking.h"
+#import "MBProgressHUD.h"
 
 @interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 
@@ -25,7 +26,7 @@
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
     
-    [self fetchMovies];
+    [self loadMovies];
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
     
@@ -36,6 +37,24 @@
     CGFloat itemWidth = (self.collectionView.frame.size.width - layout.minimumInteritemSpacing * (postersPerLine - 1)) / postersPerLine;
     CGFloat itemHeight = itemWidth * 1.5;
     layout.itemSize = CGSizeMake(itemWidth, itemHeight);
+}
+
+- (void)loadMovies {
+    //[self.activityIndicator startAnimating];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:0.1f];
+    hud.mode = MBProgressHUDModeDeterminate;
+    hud.label.text = NSLocalizedString(@"Loading...", @"HUD loading title");
+    NSLog(@"Started animation");
+    dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^{
+        [self fetchMovies];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //[self.activityIndicator stopAnimating];
+            [hud hideAnimated:YES afterDelay:2.f]; // FIXME: MBProgressHUD only works if I manually set a delay time?
+            NSLog(@"Ended animation");
+        });
+    });
 }
 
 - (void)fetchMovies {
@@ -50,13 +69,11 @@
                preferredStyle:(UIAlertControllerStyleAlert)];
                
                UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                   [self fetchMovies];
+                   [self loadMovies];
                }];
                [alert addAction:tryAgainAction];
                
-               [self presentViewController:alert animated:YES completion:^{
-                   [self fetchMovies];
-               }];
+               [self presentViewController:alert animated:YES completion:nil];
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
