@@ -10,6 +10,7 @@
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "DetailsViewController.h"
+#import "MBProgressHUD.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -30,13 +31,30 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    [self.activityIndicator startAnimating]; // TODO: not appearing, check if it's right?
-    [self fetchMovies];
-    [self.activityIndicator stopAnimating];
+    [self loadMovies];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+}
+
+- (void)loadMovies {
+    // FIXME: UIActivityIndicator doesn't appear
+    //[self.activityIndicator startAnimating];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+    hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
+    hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:0.1f];
+    hud.mode = MBProgressHUDModeDeterminate;
+    hud.label.text = NSLocalizedString(@"Loading...", @"HUD loading title");
+    NSLog(@"Started animation");
+    dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^{
+        [self fetchMovies];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //[self.activityIndicator stopAnimating];
+            [hud hideAnimated:YES afterDelay:2.f]; // FIXME: MBProgressHUD only works if I manually set a delay time?
+            NSLog(@"Ended animation");
+        });
+    });
 }
 
 - (void)fetchMovies {
@@ -45,20 +63,22 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
            if (error != nil) {
-               NSLog(@"%@", [error localizedDescription]);
+               NSString *errorMessage = [error localizedDescription];
+               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network Error"
+                      message:errorMessage
+               preferredStyle:(UIAlertControllerStyleAlert)];
+               
+               UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                   [self loadMovies];
+               }];
+               [alert addAction:tryAgainAction];
+               
+               [self presentViewController:alert animated:YES completion:nil];
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                
-               NSLog(@"%@", dataDictionary);
-               
-               // Get the array of movies
-               // Store the movies in a property to use elsewhere
                self.movies = dataDictionary[@"results"];
-               for (NSDictionary *movie in self.movies) {
-                   NSLog(@"%@", movie[@"title"]);
-               }
-               // Reload your table view data
                [self.tableView reloadData];
            }
            [self.refreshControl endRefreshing];

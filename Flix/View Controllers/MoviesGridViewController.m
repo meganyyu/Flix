@@ -44,7 +44,19 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
            if (error != nil) {
-               NSLog(@"%@", [error localizedDescription]);
+               NSString *errorMessage = [error localizedDescription];
+               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network Error"
+                      message:errorMessage
+               preferredStyle:(UIAlertControllerStyleAlert)];
+               
+               UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                   [self fetchMovies];
+               }];
+               [alert addAction:tryAgainAction];
+               
+               [self presentViewController:alert animated:YES completion:^{
+                   [self fetchMovies];
+               }];
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];

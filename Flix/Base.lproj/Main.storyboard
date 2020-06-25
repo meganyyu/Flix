@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="eGO-1j-hwY">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" id="eGO-1j-hwY">
+                                <rect key="frame" x="0.0" y="438" width="414" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
@@ -86,11 +86,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="OjF-K2-M3Z">
-                                <rect key="frame" x="197" y="438" width="20" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </activityIndicatorView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Te1-Tv-2mw">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -129,7 +124,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="ioi-gw-Dif"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="OjF-K2-M3Z" id="v8E-fl-pDl"/>
                         <outlet property="backdropView" destination="HOh-y5-EPy" id="QNj-uT-9kz"/>
                         <outlet property="posterView" destination="Lnz-lR-nxX" id="VZf-DI-ooi"/>
                         <outlet property="synopsisLabel" destination="Gfz-vT-8rV" id="eBf-hq-0cf"/>
@@ -161,7 +155,6 @@
         <!--Item-->
         <scene sceneID="GB8-gJ-5tj">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ih2-78-HYm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="xup-q6-Ahl" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" id="aOh-hB-UHG"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="TSO-bt-tJj">
@@ -172,6 +165,7 @@
                         <segue destination="bti-2M-mPz" kind="relationship" relationship="rootViewController" id="rpF-2b-KjA"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ih2-78-HYm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2032" y="138"/>
         </scene>
