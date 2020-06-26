@@ -102,23 +102,43 @@
     cell.titleLabel.text = movie[@"title"];
     cell.synopsisLabel.text = movie[@"overview"];
     
-    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
+    NSString *baseURLStringLarge = @"https://image.tmdb.org/t/p/w500";
+    NSString *baseURLStringSmall = @"https://image.tmdb.org/t/p/w200";
     NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
+    NSString *fullPosterURLStringLarge = [baseURLStringLarge stringByAppendingString:posterURLString];
+    NSString *fullPosterURLStringSmall = [baseURLStringSmall stringByAppendingString:posterURLString];
     
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    NSURL *posterURLSmall = [NSURL URLWithString:fullPosterURLStringSmall];
+    NSURL *posterURLLarge = [NSURL URLWithString:fullPosterURLStringLarge];
     cell.posterView.image = nil;
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:posterURL];
+    NSURLRequest *requestSmall = [NSURLRequest requestWithURL:posterURLSmall];
+    NSURLRequest *requestLarge = [NSURLRequest requestWithURL:posterURLLarge];
 
     __weak MovieCell *weakCell = cell;
     
-    [cell.posterView setImageWithURLRequest:request placeholderImage:nil
-                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *image) {
+    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:nil
+                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
         [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            weakCell.posterView.image = image;
-        } completion:nil];
-    } failure:nil];
+            weakCell.posterView.image = smallImage;
+            //NSLog(@"Loaded small image");
+        } completion:^(BOOL finished) {
+            // The AFNetworking ImageView Category only allows one request to be sent at a time
+            // per ImageView. This code must be in the completion block.
+            [weakCell.imageView setImageWithURLRequest:requestLarge placeholderImage:smallImage
+                                               success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *largeImage) {
+                weakCell.imageView.image = largeImage;
+                //NSLog(@"Loaded large image");
+            } failure:nil];
+        }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        // for the failure condition just try to get the large image
+        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:nil
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
+            [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                weakCell.posterView.image = largeImage;
+            } completion:nil];
+        } failure:nil];
+    }];
     
     return cell;
 }
