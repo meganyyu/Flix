@@ -108,7 +108,17 @@
     
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
     cell.posterView.image = nil;
-    [cell.posterView setImageWithURL:posterURL];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:posterURL];
+
+    __weak MovieCell *weakCell = cell;
+    
+    [cell.posterView setImageWithURLRequest:request placeholderImage:nil
+                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *image) {
+        [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            weakCell.posterView.image = image;
+        } completion:nil];
+    } failure:nil];
     
     return cell;
 }
