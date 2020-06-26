@@ -23,8 +23,9 @@ The following **optional** features are implemented:
 - [x] All images fade in as they are loading.
 - [ ] User can view the large movie poster by tapping on a cell.
 - [x] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
-- [ ] Customize the selection effect of the cell.
-- [ ] Customize the navigation bar.
+- [x] While poster is being fetched or if poster fails to load, user sees a placeholder image
+- [x] Customize the selection effect of the cell.
+- [x] Customize the navigation bar.
 - [ ] Customize the UI.
 
 The following **additional** features are implemented:
