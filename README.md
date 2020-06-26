@@ -30,6 +30,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 - [ ] Show recommended movies in details screen based on what movie is selected
+- [ ] Show ratings in details screen and ability to see reviews
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
