@@ -100,13 +100,40 @@
     
     NSDictionary *movie = self.filteredData[indexPath.item];
     
-    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
+    NSString *baseURLStringLarge = @"https://image.tmdb.org/t/p/w500";
+    NSString *baseURLStringSmall = @"https://image.tmdb.org/t/p/w200";
     NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
+    NSString *fullPosterURLStringLarge = [baseURLStringLarge stringByAppendingString:posterURLString];
+    NSString *fullPosterURLStringSmall = [baseURLStringSmall stringByAppendingString:posterURLString];
     
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    NSURL *posterURLSmall = [NSURL URLWithString:fullPosterURLStringSmall];
+    NSURL *posterURLLarge = [NSURL URLWithString:fullPosterURLStringLarge];
     cell.posterView.image = nil;
-    [cell.posterView setImageWithURL:posterURL];
+    NSURLRequest *requestSmall = [NSURLRequest requestWithURL:posterURLSmall];
+    NSURLRequest *requestLarge = [NSURLRequest requestWithURL:posterURLLarge];
+
+    __weak MovieCollectionCell *weakCell = cell;
+    
+    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:nil
+                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
+        [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            weakCell.posterView.image = smallImage;
+            //NSLog(@"Loaded small image"); // FIXME: fade transition doesn't appear to be working for CollectionsView
+        } completion:^(BOOL finished) {
+            [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:smallImage
+                                               success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *largeImage) {
+                weakCell.posterView.image = largeImage;
+                //NSLog(@"Loaded large image");
+            } failure:nil];
+        }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:nil
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
+            [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                weakCell.posterView.image = largeImage;
+            } completion:nil];
+        } failure:nil];
+    }];
     
     return cell;
 }

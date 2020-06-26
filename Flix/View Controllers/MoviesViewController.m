@@ -122,16 +122,13 @@
             weakCell.posterView.image = smallImage;
             //NSLog(@"Loaded small image");
         } completion:^(BOOL finished) {
-            // The AFNetworking ImageView Category only allows one request to be sent at a time
-            // per ImageView. This code must be in the completion block.
-            [weakCell.imageView setImageWithURLRequest:requestLarge placeholderImage:smallImage
+            [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:smallImage
                                                success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *largeImage) {
-                weakCell.imageView.image = largeImage;
+                weakCell.posterView.image = largeImage;
                 //NSLog(@"Loaded large image");
             } failure:nil];
         }];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        // for the failure condition just try to get the large image
         [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:nil
                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
             [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
