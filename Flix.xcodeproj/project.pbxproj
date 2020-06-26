@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		712F194524A6C0CD007CF8E6 /* PosterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 712F194424A6C0CD007CF8E6 /* PosterViewController.m */; };
 		714356C424A3E9D200741281 /* MovieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 714356C324A3E9D200741281 /* MovieCell.m */; };
 		71591F2C24A52E9400E7B5E3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71591F2B24A52E9400E7B5E3 /* WebKit.framework */; };
 		71591F2F24A535BF00E7B5E3 /* TrailerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71591F2E24A535BF00E7B5E3 /* TrailerViewController.m */; };
@@ -48,6 +49,8 @@
 		14BB7BBFB5BB8978AA2B5E58 /* Pods-FlixTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlixTests.debug.xcconfig"; path = "Target Support Files/Pods-FlixTests/Pods-FlixTests.debug.xcconfig"; sourceTree = "<group>"; };
 		18DC0D53D847794B79423F9E /* Pods-Flix-FlixUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flix-FlixUITests.debug.xcconfig"; path = "Target Support Files/Pods-Flix-FlixUITests/Pods-Flix-FlixUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		694E8576AD65F9B23BD1F8BD /* Pods-Flix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flix.release.xcconfig"; path = "Target Support Files/Pods-Flix/Pods-Flix.release.xcconfig"; sourceTree = "<group>"; };
+		712F194324A6C0CD007CF8E6 /* PosterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PosterViewController.h; sourceTree = "<group>"; };
+		712F194424A6C0CD007CF8E6 /* PosterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PosterViewController.m; sourceTree = "<group>"; };
 		714356C224A3E9D200741281 /* MovieCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieCell.h; sourceTree = "<group>"; };
 		714356C324A3E9D200741281 /* MovieCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovieCell.m; sourceTree = "<group>"; };
 		71591F2B24A52E9400E7B5E3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -197,6 +200,8 @@
 				71CF4C0724A405AD00C29CBE /* MoviesGridViewController.m */,
 				71591F2D24A535BF00E7B5E3 /* TrailerViewController.h */,
 				71591F2E24A535BF00E7B5E3 /* TrailerViewController.m */,
+				712F194324A6C0CD007CF8E6 /* PosterViewController.h */,
+				712F194424A6C0CD007CF8E6 /* PosterViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -477,6 +482,7 @@
 				719A24C124A3B45B00F794A6 /* SceneDelegate.m in Sources */,
 				71591F2F24A535BF00E7B5E3 /* TrailerViewController.m in Sources */,
 				71CF4C0824A405AD00C29CBE /* MoviesGridViewController.m in Sources */,
+				712F194524A6C0CD007CF8E6 /* PosterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

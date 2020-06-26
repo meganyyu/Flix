@@ -33,6 +33,9 @@
     
     [self loadMovies];
     
+    self.navigationItem.title = @"Explore";
+    self.navigationItem.title = @"Explore";
+    
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
     
     layout.minimumInteritemSpacing = 5;
@@ -114,7 +117,7 @@
 
     __weak MovieCollectionCell *weakCell = cell;
     
-    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:nil
+    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
                                     success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
         [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
             weakCell.posterView.image = smallImage;
@@ -127,7 +130,7 @@
             } failure:nil];
         }];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:nil
+        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
             [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
                 weakCell.posterView.image = largeImage;

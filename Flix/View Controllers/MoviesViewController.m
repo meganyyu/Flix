@@ -40,6 +40,13 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
+    
+    // TODO: Customize navigation controller & tab bar
+    self.navigationItem.title = @"Now Playing";
+    self.tabBarItem.title = @"Now Playing";
+    
+    UINavigationBar *navigationBar = self.navigationController.navigationBar;
+    navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor grayColor]};
 }
 
 - (void)loadMovies {
@@ -116,7 +123,7 @@
 
     __weak MovieCell *weakCell = cell;
     
-    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:nil
+    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
                                     success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
         [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
             weakCell.posterView.image = smallImage;
@@ -129,7 +136,7 @@
             } failure:nil];
         }];
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:nil
+        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
                                         success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
             [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
                 weakCell.posterView.image = largeImage;
@@ -138,6 +145,10 @@
     }];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

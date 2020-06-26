@@ -9,6 +9,7 @@
 #import "DetailsViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "TrailerViewController.h"
+#import "PosterViewController.h"
 
 @interface DetailsViewController ()
 
@@ -16,9 +17,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *posterView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ratingLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UIButton *playButton;
 
 @property (strong, nonatomic) NSURL *trailerURL;
+@property (strong, nonatomic) NSURL *posterURL;
 
 @end
 
@@ -28,23 +32,39 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.navigationItem.title = self.movie[@"title"];
+    
+    self.posterView.layer.shadowColor = UIColor.darkGrayColor.CGColor;
+    self.posterView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    self.posterView.layer.shadowRadius = 25.0;
+    self.posterView.layer.shadowOpacity = 0.9;
+    self.posterView.layer.cornerRadius = 25.0;
+    self.posterView.clipsToBounds = YES;
+    
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = self.movie[@"poster_path"];
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    self.posterURL = posterURL;
     [self.posterView setImageWithURL:posterURL];
     
     NSString *backdropURLString = self.movie[@"backdrop_path"];
     NSString *fullBackdropURLString = [baseURLString stringByAppendingString:backdropURLString];
-    
     NSURL *backdropURL = [NSURL URLWithString:fullBackdropURLString];
     [self.backdropView setImageWithURL:backdropURL];
     
+    [self.titleLabel setFont:[UIFont fontWithName:@"GeezaPro-Bold" size:30]];
+    [self.titleLabel setTextColor:[UIColor blackColor]];
+    [self.titleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.synopsisLabel setFont:[UIFont fontWithName:@"GeezaPro" size:16]];
+    [self.synopsisLabel setTextColor:[UIColor blackColor]];
+    [self.ratingLabel setTextColor:[UIColor grayColor]];
+    
     self.titleLabel.text = self.movie[@"title"];
     self.synopsisLabel.text = self.movie[@"overview"];
+    self.ratingLabel.text = [NSString stringWithFormat:@"Rating: %@", self.movie[@"vote_average"]];
     
-    [self fetchTrailerURL]; // FIXME: I'd like to call this in the prepareForSegue so that it only fetches it once I click the poster, but the network request is too slow so the composed URL doesn't get saved fast enough so I just called it here. Alternative?
+    [self fetchTrailerURL]; // FIXME: I'd like to call this in the prepareForSegue so that it only fetches it once I click the poster
     
     // You don't do this in auto layout world
     [self.titleLabel sizeToFit];
@@ -88,19 +108,27 @@
 }
 
 - (IBAction)onPosterTap:(UITapGestureRecognizer *)sender {
+    [self performSegueWithIdentifier:@"posterSegue" sender:nil];
+}
+
+- (IBAction)onButtonTap:(id)sender {
     [self performSegueWithIdentifier:@"trailerSegue" sender:nil];
 }
 
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    TrailerViewController *trailerViewController = segue.destinationViewController;
-    
-    //[self fetchTrailerURL];
-    NSLog(@"The final trailer URL is %@", self.trailerURL);
-    trailerViewController.trailerURL = self.trailerURL;
-    
-    NSLog(@"Tapping on a poster!");
+    if([[segue identifier] isEqualToString:@"trailerSegue"]) {
+        TrailerViewController *trailerViewController = segue.destinationViewController;
+        //[self fetchTrailerURL];
+        NSLog(@"The final trailer URL is %@", self.trailerURL);
+        trailerViewController.trailerURL = self.trailerURL;
+    } else if ([[segue identifier] isEqualToString:@"posterSegue"]) {
+        PosterViewController *posterViewController = segue.destinationViewController;
+        NSLog(@"The poster URL is %@", self.posterURL);
+        posterViewController.posterURL = self.posterURL;
+        NSLog(@"Tapping on a poster!");
+    }
 }
 
 @end

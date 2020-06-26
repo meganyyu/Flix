@@ -12,7 +12,13 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
+    
+    self.posterView.layer.shadowColor = UIColor.darkGrayColor.CGColor;
+    self.posterView.layer.shadowOffset = CGSizeMake(5.0, 5.0);
+    self.posterView.layer.shadowRadius = 25.0;
+    self.posterView.layer.shadowOpacity = 0.9;
+    self.posterView.layer.cornerRadius = 25.0;
+    self.posterView.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -1,31 +1,31 @@
 //
-//  TrailerViewController.m
+//  PosterViewController.m
 //  Flix
 //
-//  Created by meganyu on 6/25/20.
+//  Created by meganyu on 6/26/20.
 //  Copyright © 2020 meganyu. All rights reserved.
 //
 
-#import "TrailerViewController.h"
+#import "PosterViewController.h"
 #import <WebKit/WebKit.h>
 
-@interface TrailerViewController ()
+@interface PosterViewController ()
 
-@property (weak, nonatomic) IBOutlet WKWebView *trailerWebView;
+@property (weak, nonatomic) IBOutlet WKWebView *posterWebView;
 
 @end
 
-@implementation TrailerViewController
+@implementation PosterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     // Place the URL in a URL Request.
-    NSURLRequest *request = [NSURLRequest requestWithURL:self.trailerURL
+    NSURLRequest *request = [NSURLRequest requestWithURL:self.posterURL
                                              cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                          timeoutInterval:10.0];
     // Load Request into WebView.
-    [self.trailerWebView loadRequest:request];
+    [self.posterWebView loadRequest:request];
 }
 
 /*
