@@ -45,7 +45,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://g.recordit.co/arWbOPrKwQ.gif' title='TableView & CollectionView' width='200' alt='TableView & CollectionView' /> &nbsp; <img src='http://g.recordit.co/CXZgMp8B0h.gif' title='Detail View' width='' alt='Detail View' /> &nbsp; <img src='http://g.recordit.co/zu2A7s9e3F.gif' title='Searching' width='' alt='Searching' />
+<img src='http://g.recordit.co/arWbOPrKwQ.gif' title='TableView & CollectionView' width='200' alt='TableView & CollectionView' /> &nbsp; <img src='http://g.recordit.co/CXZgMp8B0h.gif' title='Detail View' width='200' alt='Detail View' /> &nbsp; <img src='http://g.recordit.co/zu2A7s9e3F.gif' title='Searching' width='200' alt='Searching' />
 
 GIF created with [Recordit](https://recordit.co/).
 
