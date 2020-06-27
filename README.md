@@ -21,19 +21,20 @@ The following **optional** features are implemented:
 - [x] User can tap a poster in the collection view to see a detail screen of that movie
 - [x] User can search for a movie.
 - [x] All images fade in as they are loading.
-- [ ] User can view the large movie poster by tapping on a cell.
+- [x] User can view the large movie poster by tapping on a cell.
 - [x] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
 - [x] While poster is being fetched or if poster fails to load, user sees a placeholder image
 - [x] Customize the selection effect of the cell.
 - [x] Customize the navigation bar.
-- [ ] Customize the UI.
+- [x] Customize the UI.
 
 The following **additional** features are implemented:
 
 - [ ] Show recommended movies in details screen based on what movie is selected
-- [ ] Show ratings in details screen and ability to see reviews
-- [ ] Customize details page with play button for trailer
-- [ ] Change images to rounded corners with shadows
+- [x] Show ratings in details screen
+- [ ] Add functionality to see reviews
+- [x] Customize details page with play button for trailer
+- [x] Change images to rounded corners with shadows
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
