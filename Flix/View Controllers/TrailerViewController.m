@@ -12,6 +12,7 @@
 @interface TrailerViewController ()
 
 @property (weak, nonatomic) IBOutlet WKWebView *trailerWebView;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -27,6 +28,11 @@
     // Load Request into WebView.
     [self.trailerWebView loadRequest:request];
 }
+
+- (IBAction)onCloseTap:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 /*
 #pragma mark - Navigation

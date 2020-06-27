@@ -186,11 +186,20 @@
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="crc-1f-Lc4">
+                                <rect key="frame" x="10" y="10" width="20" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="xmark.circle.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="onCloseTap:" destination="diF-oE-8Wf" eventType="touchUpInside" id="ICu-RK-5ZS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="8Ia-nJ-xqw"/>
                     </view>
                     <connections>
+                        <outlet property="closeButton" destination="crc-1f-Lc4" id="xdL-bx-yYQ"/>
                         <outlet property="trailerWebView" destination="XGE-4z-MQC" id="SqL-Fr-3eI"/>
                     </connections>
                 </viewController>
@@ -325,16 +334,26 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
                                 <wkWebViewConfiguration key="configuration">
                                     <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
                                     <wkPreferences key="preferences"/>
                                 </wkWebViewConfiguration>
                             </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H9a-df-KLJ">
+                                <rect key="frame" x="5" y="5" width="20" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="xmark.circle.fill" catalog="system"/>
+                                <connections>
+                                    <action selector="onCloseTap:" destination="lDo-ji-6Jz" eventType="touchUpInside" id="EQZ-1S-4DJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="mpk-BE-5ba"/>
                     </view>
                     <connections>
+                        <outlet property="closeButton" destination="H9a-df-KLJ" id="Iyv-N2-RS7"/>
                         <outlet property="posterWebView" destination="7Fk-Ij-dIT" id="74y-bR-BXB"/>
                     </connections>
                 </viewController>
@@ -350,5 +369,6 @@
         <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <image name="play_trailer_icon_green" width="60" height="60"/>
         <image name="video.fill" catalog="system" width="128" height="82"/>
+        <image name="xmark.circle.fill" catalog="system" width="128" height="121"/>
     </resources>
 </document>

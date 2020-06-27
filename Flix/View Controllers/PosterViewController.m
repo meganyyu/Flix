@@ -12,6 +12,7 @@
 @interface PosterViewController ()
 
 @property (weak, nonatomic) IBOutlet WKWebView *posterWebView;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
@@ -26,6 +27,11 @@
                                          timeoutInterval:10.0];
     // Load Request into WebView.
     [self.posterWebView loadRequest:request];
+}
+
+- (IBAction)onCloseTap:(id)sender {
+    NSLog(@"Closing poster!");
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*
