@@ -38,8 +38,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. Understanding how to do work in main thread vs. background thread (async operations)
-2.
+1. Better understanding how to do work in main thread vs. background thread (async operations)
+2. Reviewing the process of dismissing modal view controllers
 
 ## Video Walkthrough
 
@@ -52,7 +52,7 @@ GIF created with [Recordit](https://recordit.co/).
 ## Notes
 
 Describe any challenges encountered while building the app.
-- Current roadblock: I was not able to get UIActivityIndicatorView to appear - I'm not sure if it's that it doesn't load at all, or if it just doesn't appear for long enough compared to the process of fetching movie data. As an alternative, I was able to get MBProgressHUD to appear as a loading screen, but only by manually setting a delay. This is only really a temporary fix, so I plan to come back to this feature at a later time.
+- I was not able to get UIActivityIndicatorView to appear - I'm not sure if it's that it doesn't load at all, or if it just doesn't appear for long enough compared to the process of fetching movie data. As an alternative, I was able to get MBProgressHUD to appear as a loading screen, but only by manually setting a delay. This is only really a temporary fix, so I plan to come back to this feature at a later time.
 
 ## Credits
 
