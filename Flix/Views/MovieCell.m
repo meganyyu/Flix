@@ -7,6 +7,7 @@
 //
 
 #import "MovieCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @implementation MovieCell
 
@@ -25,6 +26,43 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)setMovie:(Movie *)movie {
+    _movie = movie;
+
+    self.titleLabel.text = self.movie.title;
+    self.synopsisLabel.text = self.movie.overview;
+    
+    NSURL *posterURLSmall = movie.smallPosterUrl;
+    NSURL *posterURLLarge = movie.largePosterUrl;
+    
+    self.posterView.image = nil;
+    NSURLRequest *requestSmall = [NSURLRequest requestWithURL:posterURLSmall];
+    NSURLRequest *requestLarge = [NSURLRequest requestWithURL:posterURLLarge];
+
+    __weak MovieCell *weakSelf = self;
+    
+    [self.posterView setImageWithURLRequest:requestSmall placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
+                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
+        [UIView transitionWithView:weakSelf duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            weakSelf.posterView.image = smallImage;
+            //NSLog(@"Loaded small image");
+        } completion:^(BOOL finished) {
+            [self.posterView setImageWithURLRequest:requestLarge placeholderImage:smallImage
+                                               success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *largeImage) {
+                weakSelf.posterView.image = largeImage;
+                //NSLog(@"Loaded large image");
+            } failure:nil];
+        }];
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [self.posterView setImageWithURLRequest:requestLarge placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
+            [UIView transitionWithView:weakSelf duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                weakSelf.posterView.image = largeImage;
+            } completion:nil];
+        } failure:nil];
+    }];
 }
 
 @end

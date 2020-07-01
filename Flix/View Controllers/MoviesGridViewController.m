@@ -11,11 +11,14 @@
 #import "UIImageView+AFNetworking.h"
 #import "MBProgressHUD.h"
 #import "DetailsViewController.h"
+#import "Movie.h"
+#import "MovieAPIManager.h"
 
 @interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate>
 
-@property (nonatomic, strong) NSArray *movies;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *movies;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @property (strong, nonatomic) NSArray *filteredData;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -33,8 +36,12 @@
     
     [self loadMovies];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView insertSubview:self.refreshControl atIndex:0];
+    
     self.navigationItem.title = @"Explore";
-    self.navigationItem.title = @"Explore";
+    self.tabBarItem.title = @"Explore";
     
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *) self.collectionView.collectionViewLayout;
     
@@ -48,7 +55,6 @@
 }
 
 - (void)loadMovies {
-    //[self.activityIndicator startAnimating];
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
     hud.backgroundView.style = MBProgressHUDBackgroundStyleSolidColor;
     hud.backgroundView.color = [UIColor colorWithWhite:0.f alpha:0.1f];
@@ -58,40 +64,31 @@
     dispatch_async(dispatch_get_global_queue( QOS_CLASS_USER_INITIATED, 0), ^{
         [self fetchMovies];
         dispatch_async(dispatch_get_main_queue(), ^{
-            //[self.activityIndicator stopAnimating];
-            [hud hideAnimated:YES afterDelay:2.f]; // FIXME: MBProgressHUD only works if I manually set a delay time?
+            [hud hideAnimated:YES afterDelay:2.f];
             NSLog(@"Ended animation");
         });
     });
 }
 
 - (void)fetchMovies {
-    NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:10.0];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-           if (error != nil) {
-               NSString *errorMessage = [error localizedDescription];
-               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network Error"
-                      message:errorMessage
-               preferredStyle:(UIAlertControllerStyleAlert)];
-               
-               UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                   [self loadMovies];
-               }];
-               [alert addAction:tryAgainAction];
-               
-               [self presentViewController:alert animated:YES completion:nil];
-           }
-           else {
-               NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-               
-               self.movies = dataDictionary[@"results"];
-               self.filteredData = self.movies;
-               [self.collectionView reloadData]; 
-            }
-       }];
-    [task resume];
+    [[MovieAPIManager shared] fetchPopular:^(NSArray *movies, NSError *error) {
+        if (error != nil) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network Error"
+                   message:[error localizedDescription]
+            preferredStyle:(UIAlertControllerStyleAlert)];
+            
+            UIAlertAction *tryAgainAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self loadMovies];
+            }];
+            [alert addAction:tryAgainAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        } else {
+            self.movies = (NSMutableArray *) movies;
+            self.filteredData = self.movies;
+            [self.collectionView reloadData];
+        }
+        [self.refreshControl endRefreshing];
+    }];
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
@@ -100,44 +97,7 @@
 
 - (__kindof UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     MovieCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
-    
-    NSDictionary *movie = self.filteredData[indexPath.item];
-    
-    NSString *baseURLStringLarge = @"https://image.tmdb.org/t/p/w500";
-    NSString *baseURLStringSmall = @"https://image.tmdb.org/t/p/w200";
-    NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLStringLarge = [baseURLStringLarge stringByAppendingString:posterURLString];
-    NSString *fullPosterURLStringSmall = [baseURLStringSmall stringByAppendingString:posterURLString];
-    
-    NSURL *posterURLSmall = [NSURL URLWithString:fullPosterURLStringSmall];
-    NSURL *posterURLLarge = [NSURL URLWithString:fullPosterURLStringLarge];
-    cell.posterView.image = nil;
-    NSURLRequest *requestSmall = [NSURLRequest requestWithURL:posterURLSmall];
-    NSURLRequest *requestLarge = [NSURLRequest requestWithURL:posterURLLarge];
-
-    __weak MovieCollectionCell *weakCell = cell;
-    
-    [cell.posterView setImageWithURLRequest:requestSmall placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
-                                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *smallImage) {
-        [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            weakCell.posterView.image = smallImage;
-            //NSLog(@"Loaded small image"); // FIXME: fade transition doesn't appear to be working for CollectionsView
-        } completion:^(BOOL finished) {
-            [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:smallImage
-                                               success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *response, UIImage *largeImage) {
-                weakCell.posterView.image = largeImage;
-                //NSLog(@"Loaded large image");
-            } failure:nil];
-        }];
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [cell.posterView setImageWithURLRequest:requestLarge placeholderImage:[UIImage imageNamed:@"loading_picture_icon"]
-                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *largeImage) {
-            [UIView transitionWithView:weakCell duration:0.3 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-                weakCell.posterView.image = largeImage;
-            } completion:nil];
-        } failure:nil];
-    }];
-    
+    cell.movie = self.filteredData[indexPath.item];
     return cell;
 }
 
@@ -149,8 +109,8 @@
     
     if (searchText.length != 0) {
         
-        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSDictionary *evaluatedObject, NSDictionary *bindings) {
-            return [evaluatedObject[@"title"] containsString:searchText];
+        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(Movie *evaluatedObject, NSDictionary *bindings) {
+            return [evaluatedObject.title containsString:searchText];
         }];
         self.filteredData = [self.movies filteredArrayUsingPredicate:predicate];
     }
@@ -175,13 +135,10 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
     UICollectionViewCell *tappedCell = sender;
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:tappedCell];
-    NSDictionary *movie = self.filteredData[indexPath.row];
+    Movie *movie = self.filteredData[indexPath.row];
     
     DetailsViewController *detailsViewController = [segue destinationViewController];
     detailsViewController.movie = movie;
