@@ -47,6 +47,8 @@
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor grayColor]};
+    
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 - (void)loadMovies {
